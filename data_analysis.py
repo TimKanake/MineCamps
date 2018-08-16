@@ -10,7 +10,7 @@ def analyze_emotion(csv_file_path, emotion):
 
     total_emotion_value = 0
     max_emotion_value = sys.float_info.min
-    # areas_of_interest = {}
+
     for key, value in emotion_levels.items():
         total_emotion_value += value
         if value > max_emotion_value:
@@ -26,6 +26,14 @@ def analyze_emotion(csv_file_path, emotion):
     std_deviation = math.sqrt(dist_from_mean_sum/(len(emotion_levels)-1))
 
     print('standard deviation: ', std_deviation)
+
+    areas_of_interest = set()
+    for key, value in emotion_levels.items():
+        if value - (3 * std_deviation) > 0:
+            areas_of_interest.add(int(int(key)/1000))
+    areas_of_interest = sorted(areas_of_interest)
+    for x in areas_of_interest:
+        print(str(int(x / 60)) + ':' + str(x % 60))
 
 
 def convert_delimited_txt_to_csv(txt_file_path, csv_file_path):
